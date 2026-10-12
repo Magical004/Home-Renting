@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PG Finder</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%232f6fed%27/%3E%3Cpath d=%27M7 16l9-8 9 8v9H7z%27 fill=%27%23fff%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <div>
+        <h1>PG Finder</h1>
+        <p>Find a paying-guest stay that fits your budget.</p>
+      </div>
+      <button type="button" id="add-btn" class="primary">+ List your PG</button>
+    </div>
+  </header>
+
+  <main class="container layout">
+    <aside class="filters" aria-label="Filters">
+      <form id="filter-form">
+        <label>Search
+          <input type="search" id="q" placeholder="Name or locality">
+        </label>
+
+        <label>City
+          <select id="city">
+            <option value="">All cities</option>
+          </select>
+        </label>
+
+        <label>Max rent: <output id="rent-out"></output>
+          <input type="range" id="rent" step="500">
+        </label>
+
+        <label>Gender
+          <select id="gender">
+            <option value="">Any</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="unisex">Unisex</option>
+          </select>
+        </label>
+
+        <label>Sharing
+          <select id="sharing">
+            <option value="">Any</option>
+            <option value="1">Single</option>
+            <option value="2">Double</option>
+            <option value="3">Triple</option>
+            <option value="4">4+ sharing</option>
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>Amenities</legend>
+          <div id="amenities"></div>
+        </fieldset>
+
+        <label class="inline"><input type="checkbox" id="shortlisted"> Shortlisted only (<span id="short-count">0</span>)</label>
+
+        <button type="reset" id="reset">Reset filters</button>
+      </form>
+    </aside>
+
+    <section class="results" aria-live="polite">
+      <div class="results-bar">
+        <span id="count"></span>
+        <div class="bar-controls">
+          <div class="toggle" role="group" aria-label="View">
+            <button type="button" id="view-list" class="active" aria-pressed="true">List</button>
+            <button type="button" id="view-map" aria-pressed="false">Map</button>
+          </div>
+          <label>Sort by
+            <select id="sort">
+              <option value="rent-asc">Rent: low to high</option>
+              <option value="rent-desc">Rent: high to low</option>
+              <option value="rating">Rating</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <p id="notice" class="notice" hidden></p>
+      <div id="listings" class="grid"></div>
+      <div id="map" hidden></div>
+    </section>
+  </main>
+
+  <dialog id="detail" aria-labelledby="detail-title"></dialog>
+
+  <dialog id="add-dialog" aria-labelledby="add-title">
+    <form id="add-form" method="dialog">
+      <h2 id="add-title">List your PG</h2>
+      <label>Name <input name="name" required maxlength="80"></label>
+      <div class="two">
+        <label>City <input name="city" list="city-list" required maxlength="60"></label>
+        <label>Locality <input name="locality" required maxlength="80"></label>
+      </div>
+      <datalist id="city-list"></datalist>
+      <div class="two">
+        <label>Monthly rent (₹) <input name="rent" type="number" min="500" max="200000" step="100" required></label>
+        <label>Phone (10 digits) <input name="phone" inputmode="numeric" pattern="[0-9]{10}" required></label>
+      </div>
+      <div class="two">
+        <label>Gender
+          <select name="gender" required>
+            <option value="unisex">Unisex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </label>
+        <label>Sharing
+          <select name="sharing" required>
+            <option value="1">Single</option>
+            <option value="2" selected>Double</option>
+            <option value="3">Triple</option>
+            <option value="4">4+ sharing</option>
+          </select>
+        </label>
+      </div>
+      <fieldset>
+        <legend>Amenities</legend>
+        <div id="add-amenities" class="check-grid"></div>
+      </fieldset>
+      <label>Description <textarea name="description" rows="3" maxlength="500"></textarea></label>
+      <label>House rules (one per line) <textarea name="rules" rows="3"></textarea></label>
+      <p id="add-error" class="error" role="alert" hidden></p>
+      <div class="actions">
+        <button type="button" id="add-cancel">Cancel</button>
+        <button type="submit" class="primary">Publish listing</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

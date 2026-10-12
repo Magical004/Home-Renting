@@ -1,0 +1,10 @@
+{
+  "name": "pg-finder",
+  "version": "1.0.0",
+  "description": "Find paying-guest accommodation: search, filter, map, shortlist and list your own PG.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}
